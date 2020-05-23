@@ -1,0 +1,4 @@
+{
+    "port": 5000,
+    "mongoUrl": "mongodb+srv://armazel:kogortaOx@cluster0-qimt1.mongodb.net/app?retryWrites=true&w=majority"
+}
