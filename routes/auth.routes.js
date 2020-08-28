@@ -50,38 +50,44 @@ router.post(
     ],
      async (req, res) => {
 
-    if(!errors.isEmpty()) {
-        return res.status(400).json({
-            message: "Шncorrect data when you log in ",
-            error: errors.array(),
+    try {
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty()) {
+            return res.status(400).json({
+                message: "Шncorrect data when you log in ",
+                error: errors.array(),
+            })
+        }
+
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(500).json({ message: 'smth webkitConvertPointFromNodeToPage, plesase repeat'});
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: "Wrong password, please repeat"});
+        }
+
+        const token = jwt.sign({
+                userId: user.id,
+                userName: user.userName
+            },
+            config.get('jwtSecretKey'),
+            { expiresIn: '1h'}
+        )
+
+        res.json({
+            token,
+            userid: user.id
         })
+    } catch (e) {
+        es.status(500).json({ message: 'someth wrong, please repeat' })
     }
-
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-        return res.status(500).json({ message: 'smth webkitConvertPointFromNodeToPage, plesase repeat'});
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-        return res.status(400).json({ message: "Wrong password, please repeat"});
-    }
-
-    const token = jwt.sign({
-            userId: user.id,
-            userName: user.userName
-        },
-        config.get('jwtSecretKey'),
-        { expiresIn: '1h'}
-    )
-
-    res.json({
-        token,
-        userid: user.id
-    })
 });
 
 module.exports = router;
