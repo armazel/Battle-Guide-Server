@@ -1,4 +1,5 @@
 {
     "port": 5000,
-    "mongoUrl": "mongodb+srv://armazel:kogortaOx@cluster0-qimt1.mongodb.net/app?retryWrites=true&w=majority"
+    "jwtSecretKey": "armazel user name",
+    "mongoUrl": "mongodb+srv://dragun_egor:1796@cluster0-es1hi.mongodb.net/test?retryWrites=true&w=majority"
 }
