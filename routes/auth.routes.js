@@ -43,7 +43,7 @@ router.post(
 
 // /api/auth/login
 router.post(
-    '/register',
+    '/login',
     [
         check('email', 'Enter the correct email address').normalizeEmail().isEmail(),
         check('password', 'Enter password').exists()
